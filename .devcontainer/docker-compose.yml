@@ -1,0 +1,15 @@
+version: '0.0.1'
+
+services:
+  main:
+    build: .
+    tty: true
+    volumes:
+      - ..:/workspace
+    working_dir: /workspace
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
+    ports:
+      - '3001:3000'

@@ -1,24 +1,38 @@
-import logo from './logo.svg';
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Navbar      from './components/Navbar';
+import Home        from './components/pages/Home';
+import PostArticle from './components/pages/PostArticle';
+import EditArticle from './components/pages/EditArticle';
+import Article     from './components/pages/Article';
+import setCognito  from './sdk/aws/cognito'
 import './App.css';
 
+import { marked }  from 'marked';
+import highlightjs from 'highlight.js';
+
 function App() {
+  // Highlight setting.
+  marked.setOptions({
+    highlight: (code, lang) => {
+      return highlightjs.highlightAuto(code, [lang]).value;
+    },
+  });
+
+  setCognito();
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <Router>
+      <Navbar />
+      <Switch>
+         <Route exact path = '/'             component = {Home }       />
+         <Route exact path = '/article'      component = {Article}     />
+         <Route exact path = '/post_article' component = {PostArticle} />
+         <Route exact path = '/edit_article' component = {EditArticle} />
+      </Switch>
+    </Router>
+    </>
   );
 }
 
